@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Interactiva Kinesiología</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #ffe6f0;
+      padding: 20px;
+    }
+    .semestre {
+      margin-bottom: 30px;
+    }
+    .semestre h2 {
+      color: #aa00aa;
+    }
+    .ramo {
+      background-color: #f9ccf9;
+      border: 2px solid #c77dff;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 10px;
+      display: inline-block;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .ramo.bloqueado {
+      background-color: #ccc;
+      border-color: #aaa;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .ramo.aprobado {
+      background-color: #ff99cc;
+      border-color: #ff3399;
+      color: white;
+    }
+    .info {
+      font-size: 12px;
+      color: #555;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌸 Malla Interactiva Kinesiología USS 🌸</h1>
+
+  <div class="semestre" id="sem1">
+    <h2>1° Semestre</h2>
+    <div class="ramo" data-id="matematica">Matemática Básica</div>
+    <div class="ramo" data-id="biocelular">Biología Celular</div>
+    <div class="ramo" data-id="orientacion">Orientación a la Kinesiología</div>
+  </div>
+
+  <div class="semestre" id="sem2">
+    <h2>2° Semestre</h2>
+    <div class="ramo bloqueado" data-id="fisiopato1" data-requiere="biocelular">Fisiopatología I</div>
+    <div class="ramo bloqueado" data-id="psicologia" data-requiere="orientacion">Psicología Aplicada a la Salud</div>
+    <div class="ramo bloqueado" data-id="fisica" data-requiere="matematica">Física Kinesiológica</div>
+  </div>
+
+  <script>
+    const ramos = document.querySelectorAll('.ramo');
+
+    ramos.forEach(ramo => {
+      ramo.addEventListener('click', () => {
+        if (ramo.classList.contains('bloqueado')) return;
+
+        ramo.classList.toggle('aprobado');
+
+        // desbloquear los que dependan de este
+        const id = ramo.dataset.id;
+        document.querySelectorAll(`[data-requiere="${id}"]`).forEach(dep => {
+          if (!dep.classList.contains('aprobado')) {
+            dep.classList.remove('bloqueado');
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
